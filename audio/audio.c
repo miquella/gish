@@ -111,12 +111,12 @@ int updateogg(void)
 
   while (processed>0)
     {
-    alSourceUnqueueBuffers(oggsource,1,&buffernum);
+    alSourceUnqueueBuffers(oggsource,1,(ALuint*)&buffernum);
 
     active=streamogg(buffernum);
 
     if (active)
-      alSourceQueueBuffers(oggsource,1,&buffernum);
+      alSourceQueueBuffers(oggsource,1,(ALuint*)&buffernum);
 
     processed--;
     }

@@ -19,9 +19,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#define WINDOZE 1
+//#define WINDOZE 1
 //#define DETLEF 1
-//#define THINKSTUPID 1
+#define THINKSTUPID 1
 
 #define CRYPTICSEA 1
 
@@ -82,6 +82,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <vorbis/vorbisenc.h>
 #include <vorbis/vorbisfile.h>
 
+#include <time.h>
+#include <unistd.h>
+
 #define pi 3.14159265359
 
 int debugit=0;
@@ -95,7 +98,7 @@ int debugit=0;
 #endif
 
 #ifdef THINKSTUPID
-#define INLINE inline
+#define INLINE 
 #endif
 
 FILE *fp;
@@ -340,7 +343,7 @@ int main (int argc,char *argv[])
   loadglextentions();
 
   for (count=0;count<2048;count++)
-    glGenTextures(1,&texture[count].glname);
+    glGenTextures(1,(GLuint*)&texture[count].glname);
 
   glDisable(GL_DEPTH_TEST);
   glDepthMask(GL_FALSE);

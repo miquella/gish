@@ -19,7 +19,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-void drawtext(unsigned char *textstring,int x,int y,int textsize,float red,float green,float blue,float alpha,...)
+void drawtext(const char *textstring,int x,int y,int textsize,float red,float green,float blue,float alpha,...)
   {
   int count,count2;
   int variabletemp;

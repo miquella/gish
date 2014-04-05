@@ -19,7 +19,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-int comparestrings(const void *arg1,const void *arg2);
+int comparestrings(const char *arg1,const char *arg2);
 int checkfilespec(char *filespec,char *filename);
 void listfiles(char *filespec,char filelist[1024][32],int directories);
 size_t (*fread2)(void *,size_t,size_t,FILE *);

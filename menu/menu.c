@@ -207,7 +207,7 @@ void drawmenuitems(void)
           else if (menuitem[count].inputtype==2)
             sprintf(menuinputtemp,"%g",*(float*)menuitem[count].inputpointer);
           else
-            strcpy(menuinputtemp,menuitem[count].inputpointer);
+            strcpy(menuinputtemp,(char*)menuitem[count].inputpointer);
   
           drawtext(menuinputtemp,menuitem[count].x+xoffset,menuitem[count].y+yoffset,menuitem[count].textsize,(float)(menuitem[count].r*(menuitem[count].highlight+1))*0.25f,(float)(menuitem[count].g*(menuitem[count].highlight+1))*0.25f,(float)(menuitem[count].b*(menuitem[count].highlight+1))*0.25f,1.0f);
           }
@@ -351,7 +351,7 @@ void setmenuitem(int option,...)
     menuitem[numofmenuitems-1].sizey=2;
     }
   if (option==MO_FUNCTION)
-    menuitem[numofmenuitems-1].function=va_arg(ap,void *);
+    menuitem[numofmenuitems-1].function=va_arg(ap,void (*)());
   if (option==MO_TOGGLE)
     {
     menuitem[numofmenuitems-1].type=2;
@@ -515,7 +515,7 @@ void menutextbox(void)
     else if(menuitem[currentmenuitem].inputtype==2)
       sprintf(menuinput,"%g",*(float*)menuitem[currentmenuitem].inputpointer);
 		else
-      strcpy(menuinput,menuitem[currentmenuitem].inputpointer);
+      strcpy(menuinput,(char*)menuitem[currentmenuitem].inputpointer);
 
     if (mouse.lmb)
       {
@@ -619,7 +619,7 @@ void menutextbox(void)
   else if (menuitem[currentmenuitem].inputtype==2)
     sscanf(menuinput,"%g",(float *)menuitem[currentmenuitem].inputpointer);
 	else
-    strcpy(menuitem[currentmenuitem].inputpointer,menuinput);
+    strcpy((char*)menuitem[currentmenuitem].inputpointer,menuinput);
   }
 
 void menutoggle(void)

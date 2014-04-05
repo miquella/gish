@@ -53,7 +53,7 @@ void checkmusic(void)
 
       while (queued>0)
         {
-        alSourceUnqueueBuffers(oggsource,1,&count);
+        alSourceUnqueueBuffers(oggsource,1,(ALuint*)&count);
 
         queued--;
         }
