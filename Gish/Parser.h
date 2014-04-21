@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2005, 2010 - Cryptic Sea
+Copyright (c) 2014 - Mark Severson
 
 This file is part of Gish.
 
@@ -19,18 +19,36 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-void loadtextfile(char *filename);
-void resetparser(void);
-int findstring(char *str);
-int checkstring(char *str);
-int getint(void);
-float getfloat(void);
-void getstring(char *str,int size);
+#ifndef GISH_PARSER_H
+#define GISH_PARSER_H
 
-struct
-  {
-  int textloc;
-  int textsize;
-  char text[1048576];
-  char numtemp[256];
-  } parser;
+#include <map>
+#include <string>
+
+namespace Gish {
+
+	class Parser {
+	private:
+		std::string mFilename;
+		std::map<std::string, std::string> mValues;
+
+	public:
+		Parser(const std::string& filename);
+		~Parser();
+
+		void Load();
+		void Save();
+		void Clear();
+
+		std::string GetString(const std::string& key) const;
+		void SetString(const std::string& key, const std::string& value);
+
+		int GetInt(const std::string& key) const;
+		void SetInt(const std::string& key, int value);
+
+		static Parser& Config();
+	};
+
+}
+
+#endif // GISH_PARSER_H

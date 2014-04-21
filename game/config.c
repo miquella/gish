@@ -19,6 +19,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+#include "Gish/Parser.h"
+
 void loadconfig(void)
   {
   int count,count2;
@@ -80,25 +82,25 @@ void loadconfig(void)
   for (count=0;count<4;count++)
     control[3].button[count+4]=count;
 
-  loadtextfile("config.txt");
-  optionreadint(&config.resolutionx,"screenwidth=");
-  optionreadint(&config.resolutiony,"screenheight=");
-  optionreadint(&config.bitsperpixel,"bitsperpixel=");
-  optionreadint(&config.depthbits,"depthbits=");
-  optionreadint(&config.stencilbits,"stencilbits=");
-  optionreadint(&config.fullscreen,"fullscreen=");
-  optionreadint(&config.sound,"sound=");
-  optionreadint(&config.music,"music=");
-  optionreadint(&config.joystick,"joystick=");
+  Gish::Parser& c = Gish::Parser::Config();
+  config.resolutionx = c.GetInt("screenwidth");
+  config.resolutiony = c.GetInt("screenheight");
+  config.bitsperpixel = c.GetInt("bitsperpixel");
+  config.depthbits = c.GetInt("depthbits");
+  config.stencilbits = c.GetInt("stencilbits");
+  config.fullscreen = c.GetInt("fullscreen");
+  config.sound = c.GetInt("sound");
+  config.music = c.GetInt("music");
+  config.joystick = c.GetInt("joystick");
 
-  optionreadint(&option.sound,"soundon=");
-  optionreadint(&option.music,"musicon=");
+  option.sound = c.GetInt("soundon");
+  option.music = c.GetInt("musicon");
   count=-1;
-  optionreadint(&count,"soundvolume=");
+  count = c.GetInt("soundvolume");
   if (count!=-1)
     option.soundvolume=(float)count/100.0f;
   count=-1;
-  optionreadint(&count,"musicvolume=");
+  count = c.GetInt("musicvolume");
   if (count!=-1)
     option.musicvolume=(float)count/100.0f;
 
@@ -107,21 +109,21 @@ void loadconfig(void)
     for (count2=0;count2<16;count2++)
       {
       sprintf(tempstr,"player%dkey%d=",count+1,count2+1);
-      optionreadint(&control[count].key[count2],tempstr);
+      control[count].key[count2] = c.GetInt(tempstr);
       }
 
     sprintf(tempstr,"player%djoysticknum=",count+1);
-    optionreadint(&control[count].joysticknum,tempstr);
+    control[count].joysticknum = c.GetInt(tempstr);
 
     for (count2=0;count2<4;count2++)
       {
       sprintf(tempstr,"player%daxis%d=",count+1,count2+1);
-      optionreadint(&control[count].axis[count2],tempstr);
+      control[count].axis[count2] = c.GetInt(tempstr);
       }
     for (count2=0;count2<16;count2++)
       {
       sprintf(tempstr,"player%dbutton%d=",count+1,count2+1);
-      optionreadint(&control[count].button[count2],tempstr);
+      control[count].button[count2] = c.GetInt(tempstr);
       }
     }
 
@@ -145,50 +147,49 @@ void saveconfig(void)
   config.stencilbits=windowinfo.stencilbits;
   config.fullscreen=windowinfo.fullscreen;
 
-  if ((fp=fopen("config.txt","wb"))==NULL)
-    return;
+  Gish::Parser& c = Gish::Parser::Config();
 
-  optionwriteint(&config.resolutionx,"screenwidth=");
-  optionwriteint(&config.resolutiony,"screenheight=");
-  optionwriteint(&config.bitsperpixel,"bitsperpixel=");
-  optionwriteint(&config.depthbits,"depthbits=");
-  optionwriteint(&config.stencilbits,"stencilbits=");
-  optionwriteint(&config.fullscreen,"fullscreen=");
-  optionwriteint(&config.sound,"sound=");
-  optionwriteint(&config.music,"music=");
-  optionwriteint(&config.joystick,"joystick=");
+  c.SetInt("screenwidth", config.resolutionx);
+  c.SetInt("screenheight", config.resolutiony);
+  c.SetInt("bitsperpixel", config.bitsperpixel);
+  c.SetInt("depthbits", config.depthbits);
+  c.SetInt("stencilbits", config.stencilbits);
+  c.SetInt("fullscreen", config.fullscreen);
+  c.SetInt("sound", config.sound);
+  c.SetInt("music", config.music);
+  c.SetInt("joystick", config.joystick);
 
-  optionwriteint(&option.sound,"soundon=");
-  optionwriteint(&option.music,"musicon=");
+  c.SetInt("soundon", option.sound);
+  c.SetInt("musicon", option.music);
   count=option.soundvolume*100.0f;
-  optionwriteint(&count,"soundvolume=");
+  c.SetInt("soundvolume", count);
   count=option.musicvolume*100.0f;
-  optionwriteint(&count,"musicvolume=");
+  c.SetInt("musicvolume", count);
 
   for (count=0;count<4;count++)
     {
     for (count2=0;count2<16;count2++)
       {
-      sprintf(tempstr,"player%dkey%d=",count+1,count2+1);
-      optionwriteint(&control[count].key[count2],tempstr);
+      sprintf(tempstr,"player%dkey%d",count+1,count2+1);
+      c.SetInt(tempstr, control[count].key[count2]);
       }
 
-    sprintf(tempstr,"player%djoysticknum=",count+1);
-    optionwriteint(&control[count].joysticknum,tempstr);
+    sprintf(tempstr,"player%djoysticknum",count+1);
+    c.SetInt(tempstr, control[count].joysticknum);
 
     for (count2=0;count2<4;count2++)
       {
-      sprintf(tempstr,"player%daxis%d=",count+1,count2+1);
-      optionwriteint(&control[count].axis[count2],tempstr);
+      sprintf(tempstr,"player%daxis%d",count+1,count2+1);
+      c.SetInt(tempstr, control[count].axis[count2]);
       }
     for (count2=0;count2<16;count2++)
       {
-      sprintf(tempstr,"player%dbutton%d=",count+1,count2+1);
-      optionwriteint(&control[count].button[count2],tempstr);
+      sprintf(tempstr,"player%dbutton%d",count+1,count2+1);
+      c.SetInt(tempstr, control[count].button[count2]);
       }
     }
 
-  fclose(fp);
+    c.Save();
   }
 
 void notsupportedmenu(void)
@@ -281,30 +282,3 @@ void notsupportedmenu(void)
   fprintf(fp,"%s\r\n",glrenderer);
   fprintf(fp,"%s\r\n",ext);
   }
-
-void optionreadint(int *ptr,char *str)
-  {
-  if (findstring(str))
-    *ptr=getint();
-
-  parser.textloc=0;
-  }
-
-void optionwriteint(int *ptr,char *str)
-  {
-  fprintf(fp,"%s%d\r\n",str,*ptr);
-  }
-
-void optionreadstring(char *ptr,char *str,int size)
-  {
-  if (findstring(str))
-    getstring(ptr,size);
-
-  parser.textloc=0;
-  }
-
-void optionwritestring(char *ptr,char *str,int size)
-  {
-  fprintf(fp,"%s%s\r\n",str,ptr);
-  }
-
